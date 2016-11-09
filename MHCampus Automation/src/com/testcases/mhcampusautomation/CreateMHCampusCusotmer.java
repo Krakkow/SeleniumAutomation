@@ -5,8 +5,8 @@ import static org.junit.Assert.fail;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -32,18 +32,18 @@ public class CreateMHCampusCusotmer
 		static String finalSaveButton;
 		long milliSeconds;
 
-
 		@BeforeClass
 		public static void setUp() throws Exception
 			{
-				System.setProperty("webdriver.chrome.driver", "C:\\Users\\Kubal\\Desktop\\Selenium\\chromedriver.exe");
+				System.setProperty("webdriver.chrome.driver", "Drivers\\chromedriver.exe");
 				DesiredCapabilities capabilities = DesiredCapabilities.chrome();
 				ChromeOptions options = new ChromeOptions();
 				options.addArguments("--disable-extensions--");
 				driver = new ChromeDriver(options);
-//				capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-//				formatterForTimee = new SimpleDateFormat("HHmmss");
-//				milliSeconds = System.currentTimeMillis();
+				// capabilities.setCapability(ChromeOptions.CAPABILITY,
+				// options);
+				// formatterForTimee = new SimpleDateFormat("HHmmss");
+				// milliSeconds = System.currentTimeMillis();
 				url = "https://login-aws-qa.tegrity.com/Service/login.aspx";
 				AdminUserName = "lior3";
 				AdminPassword = "87AEE2303027";
@@ -53,14 +53,13 @@ public class CreateMHCampusCusotmer
 				finalSaveButton = "ctl00_ContentPlaceHolder1_ClientServicesMain1_NewCustomer1_ButtonCreateCustomer";
 			}
 
-
 		// Logging to MHCampus's Client Services
 		@Test
 		public void loginToClientServicesAsAdmin()
 			{
 
 				try
-					{	
+					{
 
 						driver.get(url);
 						driver.findElement(By.id("TextBoxInstitution")).clear();
@@ -83,8 +82,8 @@ public class CreateMHCampusCusotmer
 				try
 					{
 						driver.findElement(By.xpath(createMHCampusUserLink)).click();
-//						wait.until(ExpectedConditions
-//								.presenceOfElementLocated(By.xpath(addNewInstitutaionLink)));
+						// wait.until(ExpectedConditions
+						// .presenceOfElementLocated(By.xpath(addNewInstitutaionLink)));
 					}
 				catch (Exception e)
 					{
@@ -96,22 +95,24 @@ public class CreateMHCampusCusotmer
 		@Test
 		public void newInstitution()
 			{
-				DateFormat formatterForDate;
-				DateFormat formatterForTime = new SimpleDateFormat("HHmmss");
-				
+				// DateFormat formatterForTime = new SimpleDateFormat("HHmmss");
+
 				milliSeconds = System.currentTimeMillis();
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTimeInMillis(milliSeconds);
-				String currentDate = (formatterForDate.format(calendar.getTime()));
-				String currentTime = (formatterForTime.format(calendar.getTime()));
-				String newInstitutionCreated = "AutomatedTest" + currentDate + currentTime;
+				Date rightNow = Calendar.getInstance().getTime();
+				SimpleDateFormat formatterForDate = new SimpleDateFormat("ddMMyyyyhhmmss");
+				// calendar.setTimeInMillis(milliSeconds);
+
+				String currentDate = formatterForDate.format(rightNow);
+				// String currentTime =
+				// (formatterForTime.format(calendar.getTime()));
+				String newInstitutionCreated = "AutomatedTest" + currentDate;
 
 				// Clicking on Add new institution link
 				try
 					{
 						driver.findElement(By.xpath(addNewInstitutaionLink)).click();
-//						wait.until(ExpectedConditions.presenceOfElementLocated(By.id(
-//								"ctl00_ContentPlaceHolder1_ClientServicesMain1_NewInstitute_ButtonSaveNewInstitution")));
+						// wait.until(ExpectedConditions.presenceOfElementLocated(By.id(
+						// "ctl00_ContentPlaceHolder1_ClientServicesMain1_NewInstitute_ButtonSaveNewInstitution")));
 					}
 				catch (Exception e)
 					{
@@ -126,8 +127,8 @@ public class CreateMHCampusCusotmer
 						driver.findElement(
 								By.id("ctl00_ContentPlaceHolder1_ClientServicesMain1_NewInstitute_ButtonSaveNewInstitution"))
 								.click();
-						wait.until(ExpectedConditions
-								.presenceOfElementLocated(By.id(finalSaveButton)));
+//						wait.until(ExpectedConditions.elementToBeClickable
+//								(By.id(finalSaveButton)));
 					}
 				catch (Exception e)
 					{
