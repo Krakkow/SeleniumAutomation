@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -20,29 +21,29 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class CreateMHCampusCusotmer
 	{
-		WebDriver driver;
+		static WebDriver driver;
 		WebDriverWait wait;
-		String url;
-		String AdminUserName;
-		String AdminPassword;
-		String instiutaionName;
-		String createMHCampusUserLink;
-		String addNewInstitutaionLink;
-		String finalSaveButton;
+		static String url;
+		static String AdminUserName;
+		static String AdminPassword;
+		static String instiutaionName;
+		static String createMHCampusUserLink;
+		static String addNewInstitutaionLink;
+		static String finalSaveButton;
 		long milliSeconds;
-		DateFormat formatterForDate;
-		DateFormat formatterForTimee;
 
-		@Before
-		public void setUp() throws Exception
+
+		@BeforeClass
+		public static void setUp() throws Exception
 			{
+				System.setProperty("webdriver.chrome.driver", "C:\\Users\\Kubal\\Desktop\\Selenium\\chromedriver.exe");
 				DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-				capabilities.setBrowserName(browserName);
 				ChromeOptions options = new ChromeOptions();
 				options.addArguments("--disable-extensions--");
-				driver = new ChromeDriver();
-				formatterForTimee = new SimpleDateFormat("HHmmss");
-				milliSeconds = System.currentTimeMillis();
+				driver = new ChromeDriver(options);
+//				capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+//				formatterForTimee = new SimpleDateFormat("HHmmss");
+//				milliSeconds = System.currentTimeMillis();
 				url = "https://login-aws-qa.tegrity.com/Service/login.aspx";
 				AdminUserName = "lior3";
 				AdminPassword = "87AEE2303027";
@@ -52,55 +53,21 @@ public class CreateMHCampusCusotmer
 				finalSaveButton = "ctl00_ContentPlaceHolder1_ClientServicesMain1_NewCustomer1_ButtonCreateCustomer";
 			}
 
-		// Initializing some of the needed parameters
-		// public static void initiateParms()
-		// {
-		// System.setProperty("webdriver.chrome.driver",
-		// "C:\\Google Drive\\MH Campus\\tests\\Qualitest
-		// Automation\\Selenium\\Things for eclipse\\chromedriver.exe");
-		// options = new ChromeOptions();
-		// options.addArguments("--disable-extensions");
-		// driver = new ChromeDriver(options);
-		// wait = new WebDriverWait(driver, 7);
-		// formatterForDate = new SimpleDateFormat("ddMMyyyy");
-		// formatterForTimee = new SimpleDateFormat("HHmmss");
-		// milliSeconds = System.currentTimeMillis();
-		// url = "https://login-aws-qa.tegrity.com/Service/login.aspx";
-		// AdminUserName = "lior3";
-		// AdminPassword = "87AEE2303027";
-		// instiutaionName = "Client Services";
-		// createMHCampusUserLink =
-		// ".//*[@id='ctl00_ContentPlaceHolder1_ClientServicesMain1_ClientServicesDashboard1_QuickLinks1_LinkButtonCreateMHCampusCustomer']";
-		// addNewInstitutaionLink =
-		// ".//*[@id='ctl00_ContentPlaceHolder1_ClientServicesMain1_NewCustomer1_LinkButtonAddNewInstitution2']";
-		// finalSaveButton =
-		// "ctl00_ContentPlaceHolder1_ClientServicesMain1_NewCustomer1_ButtonCreateCustomer";
-		//
-		// }
-
-		public CreateMHCampusCusotmer()
-			{
-				super();
-				// TODO Auto-generated constructor stub
-			}
 
 		// Logging to MHCampus's Client Services
 		@Test
 		public void loginToClientServicesAsAdmin()
 			{
-				driver = new ChromeDriver();
-				ChromeOptions options = new ChromeOptions();
-				options.addArguments("--disable-extensions--");
+
 				try
-					{
+					{	
+
 						driver.get(url);
 						driver.findElement(By.id("TextBoxInstitution")).clear();
 						driver.findElement(By.id("TextBoxInstitution")).sendKeys(instiutaionName);
 						driver.findElement(By.id("TextBoxUsername")).sendKeys(AdminUserName);
 						driver.findElement(By.id("TextBoxPassword")).sendKeys(AdminPassword);
 						driver.findElement(By.id("ButtonLogin")).click();
-						wait.until(ExpectedConditions
-								.presenceOfElementLocated(By.xpath(createMHCampusUserLink)));
 					}
 				catch (Exception e)
 					{
@@ -116,8 +83,8 @@ public class CreateMHCampusCusotmer
 				try
 					{
 						driver.findElement(By.xpath(createMHCampusUserLink)).click();
-						wait.until(ExpectedConditions
-								.presenceOfElementLocated(By.xpath(addNewInstitutaionLink)));
+//						wait.until(ExpectedConditions
+//								.presenceOfElementLocated(By.xpath(addNewInstitutaionLink)));
 					}
 				catch (Exception e)
 					{
@@ -129,18 +96,22 @@ public class CreateMHCampusCusotmer
 		@Test
 		public void newInstitution()
 			{
+				DateFormat formatterForDate;
+				DateFormat formatterForTime = new SimpleDateFormat("HHmmss");
+				
+				milliSeconds = System.currentTimeMillis();
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTimeInMillis(milliSeconds);
 				String currentDate = (formatterForDate.format(calendar.getTime()));
-				String currentTime = (formatterForTimee.format(calendar.getTime()));
+				String currentTime = (formatterForTime.format(calendar.getTime()));
 				String newInstitutionCreated = "AutomatedTest" + currentDate + currentTime;
 
 				// Clicking on Add new institution link
 				try
 					{
 						driver.findElement(By.xpath(addNewInstitutaionLink)).click();
-						wait.until(ExpectedConditions.presenceOfElementLocated(By.id(
-								"ctl00_ContentPlaceHolder1_ClientServicesMain1_NewInstitute_ButtonSaveNewInstitution")));
+//						wait.until(ExpectedConditions.presenceOfElementLocated(By.id(
+//								"ctl00_ContentPlaceHolder1_ClientServicesMain1_NewInstitute_ButtonSaveNewInstitution")));
 					}
 				catch (Exception e)
 					{
