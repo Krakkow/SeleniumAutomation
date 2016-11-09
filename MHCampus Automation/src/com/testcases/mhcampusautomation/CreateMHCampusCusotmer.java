@@ -2,10 +2,10 @@ package com.testcases.mhcampusautomation;
 
 import static org.junit.Assert.fail;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -162,9 +162,9 @@ public class CreateMHCampusCusotmer
 				try
 					{
 						// selecting account purposes
-						WebElement dropDownListBox = driver.findElement(By.id(
+						WebElement accountPurposeDropDownListBox = driver.findElement(By.id(
 								"ctl00_ContentPlaceHolder1_ClientServicesMain1_NewCustomer1_DropDownListAcountPurposeMHC"));
-						Select clickThis = new Select(dropDownListBox);
+						Select clickThis = new Select(accountPurposeDropDownListBox);
 						clickThis.selectByValue("Qa");
 						Thread.sleep(5000);
 					}
@@ -176,17 +176,30 @@ public class CreateMHCampusCusotmer
 				// Choosing the digital environment
 				try
 					{
-						WebElement dropDownListBoxDigEnv = driver.findElement(By.id(
+						WebElement select = driver.findElement(By.id("gender"));
+						List<WebElement> options = select.findElements(By.tagName("Male"));
+						for (WebElement option : options) {
+						    if("Germany".equals(option.getText()))
+						        option.click();   
+						}
+						
+						
+						
+						String envName;
+						WebElement dropDownListBoxDigEnvOptions = driver.findElement(By.id(
 								"ctl00_ContentPlaceHolder1_ClientServicesMain1_NewCustomer1_DropDownListEMHDigitalEnv"));
 						System.out.println("the dropDownListBoxDigEnv element was found");
-						Select clickThis = new Select(dropDownListBoxDigEnv);
+						Select clickThis = new Select(dropDownListBoxDigEnvOptions);
 						System.out.println("the select tag was found");
-						// List <WebElement> allOptions =
-						// driver.findElements(By.xpath(".//*[@id='ctl00_ContentPlaceHolder1_ClientServicesMain1_NewCustomer1_DropDownListEMHDigitalEnv']/option"));
-						// for (WebElement webElement : allOptions)
-						// {
-						// System.out.println(allOptions);
-						// }
+						 List <WebElement> allOptions =
+								 dropDownListBoxDigEnvOptions.findElements(By.xpath(".//*[@id='ctl00_ContentPlaceHolder1_ClientServicesMain1_NewCustomer1_DropDownListEMHDigitalEnv']/option"));
+						 for (WebElement option : allOptions)
+						 {
+							 if (option != null)
+								{
+								}
+						 System.out.println(allOptions);
+						 }
 						clickThis.selectByIndex(0);// ("QaStaging");
 
 						System.out.println("the qa staging value was found");
@@ -231,15 +244,35 @@ public class CreateMHCampusCusotmer
 						fail("Could not find option from dropdown list: " + e.getMessage());
 					}
 				// Choosing a university
+				
+				
+//
+//				WebDriver driver = new FirefoxDriver();
+//				driver.get("https://www.google.co.in/");
+//				Thread.sleep(2000);
+//				WebElement autoOptions= driver.findElement(By.id("lst-ib"));
+//				autoOptions.sendKeys("he");
+//
+//				List<WebElement> optionsToSelect = driver.findElements(By.xpath("//div[@class='sbqs_c']"));
+//
+//				for(WebElement option : optionsToSelect){
+//				    System.out.println(option);
+//				    if(option.getText().equals(textToSelect)) {
+//				        System.out.println("Trying to select: "+textToSelect);
+//				        option.click();
+//				        break;
+//				    }
 				try
 					{
+						String textToSelect = "Birm (Antwerpen)";
 						WebElement university = driver.findElement(By.id(
 								"ctl00_ContentPlaceHolder1_ClientServicesMain1_NewCustomer1_SchoolMHInfo_TextBoxSchools"));
 						university.sendKeys("birm");
 						Thread.sleep(5000);
-						wait.until(ExpectedConditions.presenceOfElementLocated(
+						wait.until(ExpectedConditions.elementToBeClickable(
 								By.id("ctl00_ContentPlaceHolder1_ClientServicesMain1_NewCustomer1_SchoolMHInfo_TextBoxSchoolsAutoCompleteExtender_completionListElem")))
 								.click();
+						Thread.sleep(3000);
 						driver.findElement(
 								By.id("ctl00_ContentPlaceHolder1_ClientServicesMain1_NewCustomer1_SchoolMHInfo_ButtonLoadInstallationId"))
 								.click();
